@@ -42,10 +42,11 @@
         const dataList = document.getElementById("Breeds");
         let breeds = [];
 
-        fetch("https://dog.ceo/api/breeds/list/all")
+        fetch("http://localhost:3000/breeds")
             .then(Response => Response.json())
             .then(data => {
-                breeds = Object.keys(data.message);
+                console.log(data);
+                breeds = Object.keys(data);
                 breeds.forEach(breed => {
                     const option = document.createElement("Option");
                     option.value = breed;
@@ -61,11 +62,11 @@
                 ImageContainer.innerHTML = "No Such Breeds";
                 return;
             }
-            fetch(`https://dog.ceo/api/breed/${breed}/images/random`)
+            fetch(`http://localhost:3000/image/${breed}`)
                 .then(response => response.json())
                 .then(data => {
                     const img = document.createElement("img");
-                    img.src = data.message;
+                    img.src = data;
                     ImageContainer.appendChild(img);
                     setTimeout(() => {
                         ImageContainer.removeChild(img);
