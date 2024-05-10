@@ -66,8 +66,7 @@ $('#registerBtn').addEventListener('click',()=>{
     //     otherwise, openHomeScreen(doc)
     //   use .catch(err=>showError('ERROR: '+err)}) to show any other errors
 
-
-    fetch('/users',
+    console.log(data);    fetch('/users',
     {
         method:'POST',
         headers: {'Content-Type': 'application/jason' },

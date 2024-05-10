@@ -44,19 +44,51 @@
                     <div>
                         Click <a href="#" id="logoutLink">here</a> to log out.
                     </div>
-                    <hr>
-                    Username: <span id="username"></span>
-                    <div class="form">
-                        Name: <input type="text" id="updateName">
-                        Email: <input type="email" id="updateEmail">
-                        <span></span>
-                        <button id="updateBtn">Update My Information</button>
-                        <span></span>
-                        <button id="deleteBtn" class="critical">Delete My Profile</button>
-                    </div>
-                    <hr>
-                    Here's the current list of users on our social:
-                    <div id="userlist"></div>
+                    <input type="text" id="Breed-input" list="Breeds" placeholder="Type a Breed of Dog..." />
+    <datalist id="Breeds"></datalist>
+    <button id="Show-Images">Show-Images</button>
+    <div id="Image-Container"></div>
+
+    <script>
+        const input = document.getElementById("Breed-input");
+        const button = document.getElementById("Show-Images");
+        const ImageContainer = document.getElementById("Image-Container");
+        const dataList = document.getElementById("Breeds");
+        let breeds = [];
+
+        fetch("http://localhost:3000/breeds")
+            .then(Response => Response.json())
+            .then(data => {
+                console.log(data);
+                breeds = Object.keys(data);
+                breeds.forEach(breed => {
+                    const option = document.createElement("Option");
+                    option.value = breed;
+                    dataList.appendChild(option);
+                });
+            });
+
+        button.addEventListener("click", () => {
+            ImageContainer.innerHTML = "";
+
+            const breed = input.value;
+            if (!breeds.includes(breed)) {
+                ImageContainer.innerHTML = "No Such Breeds";
+                return;
+            }
+            fetch(`http://localhost:3000/image/${breed}`)
+                .then(response => response.json())
+                .then(data => {
+                    const img = document.createElement("img");
+                    img.src = data.photo;
+                    ImageContainer.appendChild(img);
+                    setTimeout(() => {
+                        ImageContainer.removeChild(img);
+                        button.click();
+                    }, 2500);
+                });
+            });
+    </Script>
                 </div>
 
             </div>
